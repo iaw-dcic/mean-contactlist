@@ -30,7 +30,7 @@ angular.module("contactsApp", ['ngRoute'])
                 }, function(response) {
                     alert("Error finding contacts.");
                 });
-        }
+        };
         this.createContact = function(contact) {
             return $http.post("/contacts", contact).
                 then(function(response) {
@@ -38,7 +38,7 @@ angular.module("contactsApp", ['ngRoute'])
                 }, function(response) {
                     alert("Error creating contact.");
                 });
-        }
+        };
         this.getContact = function(contactId) {
             var url = "/contacts/" + contactId;
             return $http.get(url).
@@ -47,7 +47,7 @@ angular.module("contactsApp", ['ngRoute'])
                 }, function(response) {
                     alert("Error finding this contact.");
                 });
-        }
+        };
         this.editContact = function(contact) {
             var url = "/contacts/" + contact._id;
             console.log(contact._id);
@@ -58,7 +58,7 @@ angular.module("contactsApp", ['ngRoute'])
                     alert("Error editing this contact.");
                     console.log(response);
                 });
-        }
+        };
         this.deleteContact = function(contactId) {
             var url = "/contacts/" + contactId;
             return $http.delete(url).
@@ -70,13 +70,18 @@ angular.module("contactsApp", ['ngRoute'])
                 });
         }
     })
-    .controller("ListController", function(contacts, $scope) {
+    .controller("ListController", function(contacts, $scope, $location) {
         $scope.contacts = contacts.data;
+        
+        $scope.showContact = function(contact_id) {
+            var contactUrl = "/contact/" + contact_id;
+            $location.path(contactUrl);
+        }
     })
     .controller("NewContactController", function($scope, $location, Contacts) {
         $scope.back = function() {
             $location.path("#/");
-        }
+        };
 
         $scope.saveContact = function(contact) {
             Contacts.createContact(contact).then(function(doc) {
@@ -97,18 +102,18 @@ angular.module("contactsApp", ['ngRoute'])
         $scope.toggleEdit = function() {
             $scope.editMode = true;
             $scope.contactFormUrl = "contact-form.html";
-        }
+        };
 
         $scope.back = function() {
             $scope.editMode = false;
             $scope.contactFormUrl = "";
-        }
+        };
 
         $scope.saveContact = function(contact) {
             Contacts.editContact(contact);
             $scope.editMode = false;
             $scope.contactFormUrl = "";
-        }
+        };
 
         $scope.deleteContact = function(contactId) {
             Contacts.deleteContact(contactId);

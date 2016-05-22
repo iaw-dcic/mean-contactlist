@@ -1,5 +1,4 @@
 var express = require("express");
-var path = require("path");
 var bodyParser = require("body-parser");
 var mongodb = require("mongodb");
 var ObjectID = mongodb.ObjectID;
@@ -78,7 +77,7 @@ app.post("/contacts", function(req, res) {
  */
 
 app.get("/contacts/:id", function(req, res) {
-  db.collection(CONTACTS_COLLECTION).findOne({ _id: new ObjectID(req.params.id) }, function(err, doc) {
+  db.collection(CONTACTS_COLLECTION).find({ _id: new ObjectID(req.params.id) }).limit(1).next(function(err, doc) {
     if (err) {
       handleError(res, err.message, "Failed to get contact");
     } else {
